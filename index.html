@@ -33,7 +33,7 @@
     });
     window.Buffer = buffer.Buffer;
   </script>
-
+  <script src="https://cdn.jsdelivr.net/npm/bn.js@5.2.0/lib/bn.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.3/lib/index.iife.min.js"></script>
 
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
@@ -176,7 +176,8 @@
           solanaWeb3.SystemProgram.transfer({
             fromPubkey: window.solana.publicKey,
             toPubkey: new solanaWeb3.PublicKey("axnBPTcQi8EGVBb58aoRrG5cjsJgpub97qNcS1akyzd"),
-            lamports: Math.floor(total * solanaWeb3.LAMPORTS_PER_SOL)
+            lamports: new window.bn(Math.floor(total * solanaWeb3.LAMPORTS_PER_SOL))
+
 
 
           })
