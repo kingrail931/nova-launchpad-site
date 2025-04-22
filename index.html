@@ -177,13 +177,13 @@
 
 
         const BN = window.BN || window.bn;
-        const lamportsAmount = new BN(Math.floor(total * solanaWeb3.LAMPORTS_PER_SOL)).toArrayLike(Uint8Array, "le", 8);
+       
 
         const transaction = new solanaWeb3.Transaction().add(
           solanaWeb3.SystemProgram.transfer({
             fromPubkey: window.solana.publicKey,
             toPubkey: new solanaWeb3.PublicKey("axnBPTcQi8EGVBb58aoRrG5cjsJgpub97qNcS1akyzd"),
-            lamports: lamportsAmount
+            lamports: new solanaWeb3.BN(Math.floor(total * solanaWeb3.LAMPORTS_PER_SOL)).toArrayLike(Uint8Array, "le", 8)
           
             
 
@@ -206,7 +206,7 @@
         const mintAddress = window.solana.publicKey.toString().slice(0, 32);
         formData.append("mintAddress", mintAddress);
 
-        const res = await fetch("https://tall-experts-sink.loca.lt/create-token", {
+        const res = await fetch("https://tough-shirts-hammer.loca.lt/create-token", {
           method: "POST",
           body: formData
         });
