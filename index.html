@@ -7,10 +7,10 @@
   <title>Nova Launchpad</title>
 
   <!-- ✅ Correct Buffer handling for GitHub Pages -->
-  <script src="https://cdn.jsdelivr.net/npm/buffer@6.0.3/index.min.js"></script>
-  <script>
-    window.Buffer = window.Buffer || Buffer;
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/buffer@6.0.3/index.umd.min.js"></script>
+<script>
+  window.Buffer = window.buffer.Buffer;
+</script>
 
   <!-- Solana Web3.js -->
   <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.3/lib/index.iife.min.js"></script>
