@@ -176,7 +176,7 @@
           solanaWeb3.SystemProgram.transfer({
             fromPubkey: window.solana.publicKey,
             toPubkey: new solanaWeb3.PublicKey("axnBPTcQi8EGVBb58aoRrG5cjsJgpub97qNcS1akyzd"),
-            lamports: BigInt(Math.floor(total * solanaWeb3.LAMPORTS_PER_SOL)),
+            lamports: Math.floor(total * solanaWeb3.LAMPORTS_PER_SOL)
 
 
           })
