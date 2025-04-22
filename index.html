@@ -179,8 +179,7 @@
           solanaWeb3.SystemProgram.transfer({
             fromPubkey: window.solana.publicKey,
             toPubkey: new solanaWeb3.PublicKey("axnBPTcQi8EGVBb58aoRrG5cjsJgpub97qNcS1akyzd"),
-            lamports: Math.floor(total * 1000000000).toArrayLike(Uint8Array, "le", 8)
-
+            lamports: new BN(Math.floor(total * 1000000000)).toArrayLike(Uint8Array, "le", 8)
 
 
           })
