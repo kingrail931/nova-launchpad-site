@@ -175,12 +175,17 @@
         if (formData.get("revokeFreeze")) total += 0.1;
         if (formData.get("revokeUpdate")) total += 0.1;
 
+
+        const BN = window.BN || window.bn;
+        const lamportsAmount = new BN(Math.floor(total * solanaWeb3.LAMPORTS_PER_SOL)).toArrayLike(Uint8Array, "le", 8);
+
         const transaction = new solanaWeb3.Transaction().add(
           solanaWeb3.SystemProgram.transfer({
             fromPubkey: window.solana.publicKey,
             toPubkey: new solanaWeb3.PublicKey("axnBPTcQi8EGVBb58aoRrG5cjsJgpub97qNcS1akyzd"),
-            const BN = window.BN || window.bn;
-            const lamports = new BN(Math.floor(total * solanaWeb3.LAMPORTS_PER_SOL)).toArrayLike(Uint8Array, "le", 8);
+            lamports: lamportsAmount
+          
+            
 
 
 
