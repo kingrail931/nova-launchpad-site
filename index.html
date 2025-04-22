@@ -176,7 +176,8 @@
         const mintAddress = window.solana.publicKey.toString().slice(0, 32);
         formData.append('mintAddress', mintAddress);
 
-        const res = await fetch('http://localhost:4000/create-token', {
+        const fetch('https://hungry-mice-heal.loca.lt/create-token', {
+
           method: 'POST',
           body: formData
         });
