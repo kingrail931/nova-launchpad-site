@@ -1,44 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nova Launchpad</title>
 
-  <!-- ✅ FULL WORKING BUFFER FIX FOR GITHUB PAGES + SOLANA -->
-  <script>
-    window.process = { env: {} };
-
-    !function(t,e){
-      typeof exports==="object"&&typeof module!=="undefined"
-        ? e(exports)
-        : typeof define==="function"&&define.amd
-        ? define(["exports"],e)
-        : e(t.buffer={})
-    }(this,function(t){
-      "use strict";
-      function e(t){
-        return null!=t && typeof t=="object" && typeof t.copy=="function" && typeof t.fill=="function" && typeof t.readUInt8=="function"
-      }
-      var r=typeof Uint8Array!="undefined"?Uint8Array:Array;
-      t.Buffer=function(){};
-      t.Buffer.from=function(t){
-        if (typeof t==="string") return new TextEncoder().encode(t);
-        if (t instanceof Array || Array.isArray(t)) return new Uint8Array(t);
-        if (t instanceof ArrayBuffer) return new Uint8Array(t);
-        if (e(t)) return t;
-        throw new TypeError("The input to Buffer.from was not valid.");
-      };
-    });
-    window.Buffer = buffer.Buffer;
-  </script>
-
   <script src="https://cdn.jsdelivr.net/npm/bn.js@5.2.0/lib/bn.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.3/lib/index.iife.min.js"></script>
   <script>
-  const BN = window.BN;
+    window.BN = window.BN || window.bn || window.Bn;
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.3/lib/index.iife.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -47,126 +18,69 @@
       background: linear-gradient(to bottom, #0b0c10, #1f2833);
       color: #fff;
     }
-    header {
-      background-color: #141b2d;
-      padding: 1.5rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-    header h1 {
-      color: #66fcf1;
-      font-size: 2rem;
-      margin: 0;
-    }
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      margin-left: 1.5rem;
-      font-weight: bold;
-    }
-    .hero {
-      text-align: center;
-      padding: 3rem 2rem;
-      background: linear-gradient(to bottom, #1f2833, #0b0c10);
-    }
-    .hero h2 {
-      color: #66fcf1;
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
     .form-container {
-      background: #141b2d;
       max-width: 600px;
       margin: 2rem auto;
       padding: 2rem;
+      background: #141b2d;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(102, 252, 241, 0.1);
     }
     .form-container input,
     .form-container textarea,
     .form-container button {
       width: 100%;
       margin-bottom: 1rem;
-      padding: 0.9rem;
+      padding: 0.8rem;
       border-radius: 8px;
       border: none;
-      font-size: 1rem;
     }
-    .form-container button {
+    button {
       background: #66fcf1;
       color: #0b0c10;
       font-weight: bold;
       cursor: pointer;
     }
-    .checkbox-container label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-size: 0.95rem;
-    }
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 0.9rem;
-      color: #888;
-      background: #0b0c10;
-    }
   </style>
 </head>
 <body>
-
-  <header>
-    <h1>Nova Launchpad</h1>
-    <nav>
-      <a href="#create">Create</a>
-      <a href="#faq">FAQ</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <h2>Launch Your Token on Solana</h2>
-    <p>Fast. Simple. Decentralized. Built for creators and communities.</p>
-  </section>
-
-  <section class="form-container">
-    <form id="tokenForm">
+  <div class="form-container">
+    <button onclick="connectWallet()">Connect Phantom Wallet</button>
+    <form id="tokenForm" style="display:none">
       <input type="text" name="name" placeholder="Token Name" required />
-      <input type="text" name="symbol" placeholder="Token Symbol" required />
+      <input type="text" name="symbol" placeholder="Symbol" required />
       <textarea name="description" placeholder="Description" required></textarea>
       <input type="file" name="image" accept="image/*" required />
       <input type="number" name="supply" placeholder="Total Supply" required />
       <input type="number" name="decimals" value="9" placeholder="Decimals" required />
-
-      <div class="checkbox-container">
-        <label><input type="checkbox" name="revokeMint" /> Revoke Mint Authority</label>
-        <label><input type="checkbox" name="revokeFreeze" /> Revoke Freeze Authority</label>
-        <label><input type="checkbox" name="revokeUpdate" /> Revoke Update Authority</label>
-      </div>
-
-      <button type="button" onclick="connectAndPay()">Connect Wallet & Create Token</button>
+      <label><input type="checkbox" name="revokeMint" /> Revoke Mint Authority</label>
+      <label><input type="checkbox" name="revokeFreeze" /> Revoke Freeze Authority</label>
+      <label><input type="checkbox" name="revokeUpdate" /> Revoke Update Authority</label>
+      <button type="button" onclick="connectAndPay()">Pay & Create Token</button>
     </form>
     <p id="status"></p>
-  </section>
-
-  <footer>
-    &copy; 2025 Nova Launchpad. Powered by Solana & ❤️.
-  </footer>
+  </div>
 
   <script>
+    let walletConnected = false;
+
+    async function connectWallet() {
+      const status = document.getElementById("status");
+      if (!window.solana || !window.solana.isPhantom) {
+        return alert("Please install Phantom Wallet.");
+      }
+      try {
+        const res = await window.solana.connect();
+        walletConnected = true;
+        document.getElementById("tokenForm").style.display = "block";
+        status.innerText = `Connected: ${res.publicKey.toString()}`;
+      } catch (err) {
+        status.innerText = `Connection Error: ${err.message}`;
+      }
+    }
+
     async function connectAndPay() {
       const status = document.getElementById("status");
       try {
-        if (!window.solana || !window.solana.isPhantom) {
-          alert("Please install Phantom Wallet");
-          return;
-        }
-
-        const resp = await window.solana.connect();
-        const customerWallet = resp.publicKey.toString();
-        status.innerText = "Wallet connected: " + customerWallet;
-
         const form = document.getElementById("tokenForm");
         const formData = new FormData(form);
 
@@ -175,20 +89,14 @@
         if (formData.get("revokeFreeze")) total += 0.1;
         if (formData.get("revokeUpdate")) total += 0.1;
 
-
-        const BN = window.BN || window.bn;
-       
+        const BN = window.BN;
+        const lamports = new BN(Math.floor(total * solanaWeb3.LAMPORTS_PER_SOL)).toArrayLike(Uint8Array, "le", 8);
 
         const transaction = new solanaWeb3.Transaction().add(
           solanaWeb3.SystemProgram.transfer({
             fromPubkey: window.solana.publicKey,
             toPubkey: new solanaWeb3.PublicKey("axnBPTcQi8EGVBb58aoRrG5cjsJgpub97qNcS1akyzd"),
-            lamports: new solanaWeb3.BN(Math.floor(total * solanaWeb3.LAMPORTS_PER_SOL)).toArrayLike(Uint8Array, "le", 8)
-          
-            
-
-
-
+            lamports: lamports
           })
         );
 
@@ -201,10 +109,9 @@
         const sig = await connection.sendRawTransaction(signed.serialize());
         await connection.confirmTransaction(sig);
 
-        status.innerText = "Payment sent! Creating token...";
+        status.innerText = "Payment successful. Creating token...";
 
-        const mintAddress = window.solana.publicKey.toString().slice(0, 32);
-        formData.append("mintAddress", mintAddress);
+        formData.append("mintAddress", window.solana.publicKey.toString().slice(0, 32));
 
         const res = await fetch("https://tough-shirts-hammer.loca.lt/create-token", {
           method: "POST",
@@ -213,7 +120,7 @@
 
         const result = await res.json();
         if (result.success) {
-          status.innerHTML = `✅ Token Created!<br>Mint: ${result.mintAddress}<br><a href="https://solscan.io/token/${result.mintAddress}" target="_blank">View on Solscan</a>`;
+          status.innerHTML = `✅ Token Created! <br> Mint: ${result.mintAddress}`;
         } else {
           status.innerText = "Token creation failed.";
         }
