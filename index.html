@@ -76,7 +76,7 @@
     await window.solana.disconnect();
 
     // Force manual approval by user
-    const res = await window.solana.connect({ onlyIfTrusted: false });
+   await window.solana.connect();
 
     walletConnected = true;
     document.getElementById("tokenForm").style.display = "block";
