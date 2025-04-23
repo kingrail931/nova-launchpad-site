@@ -69,7 +69,7 @@
         return alert("Please install Phantom Wallet.");
       }
       try {
-        const res = await window.solana.connect();
+        const res = await window.solana.connect({ onlyIfTrusted: false });
         walletConnected = true;
         document.getElementById("tokenForm").style.display = "block";
         status.innerText = `Connected: ${res.publicKey.toString()}`;
