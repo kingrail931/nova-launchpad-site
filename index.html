@@ -64,19 +64,27 @@
     let walletConnected = false;
 
     async function connectWallet() {
-      const status = document.getElementById("status");
-      if (!window.solana || !window.solana.isPhantom) {
-        return alert("Please install Phantom Wallet.");
-      }
-      try {
-        const res = await window.solana.connect({ onlyIfTrusted: false });
-        walletConnected = true;
-        document.getElementById("tokenForm").style.display = "block";
-        status.innerText = `Connected: ${res.publicKey.toString()}`;
-      } catch (err) {
-        status.innerText = `Connection Error: ${err.message}`;
-      }
-    }
+  const status = document.getElementById("status");
+
+  if (!window.solana || !window.solana.isPhantom) {
+    alert("Please install Phantom Wallet.");
+    return;
+  }
+
+  try {
+    // Force disconnect to clear auto-connection cache
+    await window.solana.disconnect();
+
+    // Force manual approval by user
+    const res = await window.solana.connect({ onlyIfTrusted: false });
+
+    walletConnected = true;
+    document.getElementById("tokenForm").style.display = "block";
+    status.innerText = `Connected: ${res.publicKey.toString()}`;
+  } catch (err) {
+    status.innerText = `Connection Error: ${err.message}`;
+  }
+}
 
     async function connectAndPay() {
       const status = document.getElementById("status");
@@ -113,7 +121,7 @@
 
         formData.append("mintAddress", window.solana.publicKey.toString().slice(0, 32));
 
-        const res = await fetch("https://slow-comics-judge.loca.lt/create-token", {
+        const res = await fetch("https://slow-comics-judge.loca.lt", {
           method: "POST",
           body: formData
         });
